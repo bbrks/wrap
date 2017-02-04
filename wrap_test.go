@@ -86,20 +86,19 @@ func TestLineWithPrefix(t *testing.T) {
 	}
 }
 
-func BenchmarkLine(b *testing.B) {
-	// Benchmark multiple line lengths.
-	for _, l := range tests {
-		// Benchmark each input line individually.
-		b.Run(
-			fmt.Sprintf("limit%d", l),
-			func(b *testing.B) {
-				for i := 0; i < b.N; i++ {
-					Line(loremIpsums[0], l)
-				}
-			},
-		)
+func benchmarkLine(b *testing.B, limit int) {
+	for i := 0; i < b.N; i++ {
+		Line(loremIpsums[0], limit)
 	}
 }
+
+func BenchmarkLine0(b *testing.B)   { benchmarkLine(b, 0) }
+func BenchmarkLine5(b *testing.B)   { benchmarkLine(b, 5) }
+func BenchmarkLine10(b *testing.B)  { benchmarkLine(b, 10) }
+func BenchmarkLine25(b *testing.B)  { benchmarkLine(b, 25) }
+func BenchmarkLine80(b *testing.B)  { benchmarkLine(b, 80) }
+func BenchmarkLine120(b *testing.B) { benchmarkLine(b, 120) }
+func BenchmarkLine500(b *testing.B) { benchmarkLine(b, 500) }
 
 func ExampleLineWithPrefix() {
 	var loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus."
