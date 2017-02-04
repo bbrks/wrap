@@ -2,6 +2,11 @@ package wrap
 
 import "strings"
 
+const (
+	// breakpoints defines which characters should be able to break a line.
+	breakpoints = " "
+)
+
 // Line will wrap a single line of text at the given length.
 // If limit is less than 1, the string remains unchanged.
 //
@@ -12,18 +17,19 @@ func Line(s string, limit int) string {
 		return s
 	}
 
-	// Find the index of the last space within the limit.
-	i := strings.LastIndex(s[:limit], " ")
+	// Find the index of the last breakpoint within the limit.
+	i := strings.LastIndexAny(s[:limit], breakpoints)
 
-	// Can't wrap within the limit, wrap at the next space instead.
+	// Can't wrap within the limit, wrap at the next breakpoint instead.
 	if i < 0 {
-		i = strings.Index(s, " ")
+		i = strings.IndexAny(s, breakpoints)
 		// Nothing left to do!
 		if i < 0 {
 			return s
 		}
 	}
 
+	// Recurse until we have nothing left to do.
 	return s[:i] + "\n" + Line(s[i+1:], limit)
 }
 
