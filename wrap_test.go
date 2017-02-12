@@ -87,6 +87,7 @@ func TestLineWithPrefix(t *testing.T) {
 }
 
 func benchmarkLine(b *testing.B, limit int) {
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		Line(loremIpsums[0], limit)
 	}
