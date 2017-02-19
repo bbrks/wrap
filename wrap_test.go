@@ -235,11 +235,11 @@ func ExampleWrapper_Wrap_prefix() {
 	var loremIpsum = "/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus. */"
 
 	// Trim the single-line block comment symbols from each input line.
-	w.TrimPrefix = "/* "
-	w.TrimSuffix = " */"
+	w.TrimInputPrefix = "/* "
+	w.TrimInputSuffix = " */"
 
 	// Prefix each new line with a single-line comment symbol.
-	w.NewlinePrefix = "// "
+	w.OutputLinePrefix = "// "
 
 	// Wrap when lines exceed 80 chars.
 	fmt.Println(w.Wrap(loremIpsum, 80))
