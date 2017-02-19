@@ -1,6 +1,9 @@
 package wrap
 
-import "strings"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 const (
 	defaultBreakpoints = " -"
@@ -55,7 +58,7 @@ func NewWrapper() Wrapper {
 // line will wrap a single line of text at the given length.
 // If limit is less than 1, the string remains unwrapped.
 func (w Wrapper) line(s string, limit int) string {
-	if limit < 1 || len(s) < limit {
+	if limit < 1 || utf8.RuneCountInString(s) < limit {
 		return w.OutputLinePrefix + s + w.OutputLineSuffix
 	}
 
@@ -82,7 +85,7 @@ func (w Wrapper) Wrap(s string, limit int) string {
 	// Subtract the length of the prefix and suffix from the limit
 	// so we don't break length limits when using them.
 	if w.LimitIncludesPrefixSuffix {
-		limit -= len(w.OutputLinePrefix) + len(w.OutputLineSuffix)
+		limit -= utf8.RuneCountInString(w.OutputLinePrefix) + utf8.RuneCountInString(w.OutputLineSuffix)
 	}
 
 	var ret string
