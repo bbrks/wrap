@@ -32,7 +32,7 @@ func TestWrapper_Wrap(t *testing.T) {
 			wrapped := w.Wrap(s, l)
 
 			// Assert that each output line is no longer than the limit.
-			for _, v := range strings.Split(wrapped, "\n") {
+			for _, v := range strings.Split(wrapped, w.Newline) {
 
 				// Only check lines which contain more than one word.
 				if !strings.Contains(v, " ") {
