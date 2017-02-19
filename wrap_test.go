@@ -21,6 +21,7 @@ var loremIpsums = []string{
 	"Curabitur tellus libero, feugiat vel mauris et, consequat auctor ipsum. Praesent sed pharetra dolor, at convallis lectus. Vivamus at ullamcorper sem. Sed euismod vel massa a dignissim. Proin auctor nibh at pretium facilisis. Ut aliquam erat lacus. Integer sit amet magna urna. Maecenas bibendum pretium mauris convallis semper. Nunc arcu tortor, pulvinar quis eros ut, mattis placerat tortor. Sed et lacus magna. Proin ultrices fermentum sem et placerat. Donec eget sapien mi. Maecenas maximus justo sed vulputate pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum accumsan, sapien sit amet suscipit dignissim, velit velit maximus elit, a cursus mi odio eu magna. Nunc nec fermentum nisi, non imperdiet purus.",
 	"Vestibulum convallis magna arcu, sagittis porta mi luctus sit amet. Nunc tellus magna, fermentum et mi vitae, consectetur vestibulum nulla. Fusce ornare, augue vitae tempor pellentesque, orci orci fringilla tortor, porta feugiat justo purus nec sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla pellentesque sed odio in aliquam. Fusce sed molestie velit. Curabitur id quam ac felis accumsan vehicula quis in ex.",
 	"Duis ac ornare erat. Nulla in odio eget ante tristique dignissim a non erat. Sed non nisi vitae arcu dapibus porta vitae dignissim ante. Cras et fringilla turpis. Maecenas arcu nibh, tempus euismod pretium eget, hendrerit vitae arcu. Sed vel dolor quam. Etiam consequat sed dolor ut elementum. Quisque dictum tempor pretium. Sed eu sollicitudin mi, in commodo ante.",
+	"",
 }
 
 func TestWrapper_Wrap(t *testing.T) {
@@ -228,4 +229,25 @@ The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad-t
 	//
 	// The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad
 	// tempered, sport-mad, fair-haired, camera-ready, and finally open-mouthed.
+}
+
+func ExampleWrapper_Wrap_prefix() {
+	var loremIpsum = "/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus. */"
+
+	// Trim the single-line block comment symbols from each input line.
+	w.TrimInputPrefix = "/* "
+	w.TrimInputSuffix = " */"
+
+	// Prefix each new line with a single-line comment symbol.
+	w.OutputLinePrefix = "// "
+
+	// Wrap when lines exceed 80 chars.
+	fmt.Println(w.Wrap(loremIpsum, 80))
+	// Output:
+	// // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam
+	// // nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper
+	// // fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc
+	// // sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget
+	// // laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia
+	// // a. Fusce non tortor magna. Cras vel finibus tellus.
 }
