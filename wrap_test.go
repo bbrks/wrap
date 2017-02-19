@@ -16,6 +16,7 @@ var tests = []int{-5, 0, 5, 10, 25, 80, 120, 500}
 
 // loremIpsums contains lorem ipsum of various line-lengths and word-lengths.
 var loremIpsums = []string{
+	"",
 	"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus.",
 	"Quisque facilisis dictum tellus vitae sagittis. Sed gravida nulla vel ultrices ultricies. Praesent vehicula ligula sit amet massa elementum, eget fringilla nunc ultricies. Fusce aliquet nunc ac lectus tempus sagittis. Phasellus molestie commodo leo, sit amet ultrices est. Integer vitae hendrerit neque, in pretium tellus. Nam egestas mauris id nunc sollicitudin ullamcorper. Integer eget accumsan nulla. Phasellus quis eros non leo condimentum fringilla quis sit amet tellus. Donec semper vulputate lacinia. In hac habitasse platea dictumst. Aliquam varius metus fringilla sapien cursus cursus.",
 	"Curabitur tellus libero, feugiat vel mauris et, consequat auctor ipsum. Praesent sed pharetra dolor, at convallis lectus. Vivamus at ullamcorper sem. Sed euismod vel massa a dignissim. Proin auctor nibh at pretium facilisis. Ut aliquam erat lacus. Integer sit amet magna urna. Maecenas bibendum pretium mauris convallis semper. Nunc arcu tortor, pulvinar quis eros ut, mattis placerat tortor. Sed et lacus magna. Proin ultrices fermentum sem et placerat. Donec eget sapien mi. Maecenas maximus justo sed vulputate pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum accumsan, sapien sit amet suscipit dignissim, velit velit maximus elit, a cursus mi odio eu magna. Nunc nec fermentum nisi, non imperdiet purus.",
@@ -228,4 +229,25 @@ The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad-t
 	//
 	// The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad
 	// tempered, sport-mad, fair-haired, camera-ready, and finally open-mouthed.
+}
+
+func ExampleWrapper_Wrap_prefix() {
+	var loremIpsum = "/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus. */"
+
+	// Trim the single-line block comment symbols from each input line.
+	w.TrimPrefix = "/* "
+	w.TrimSuffix = " */"
+
+	// Prefix each new line with a single-line comment symbol.
+	w.NewlinePrefix = "// "
+
+	// Wrap when lines exceed 80 chars.
+	fmt.Println(w.Wrap(loremIpsum, 80))
+	// Output:
+	// // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam
+	// // nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper
+	// // fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis
+	// // magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet
+	// // aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce
+	// // non tortor magna. Cras vel finibus tellus.
 }
