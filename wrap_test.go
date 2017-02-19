@@ -246,8 +246,8 @@ func ExampleWrapper_Wrap_prefix() {
 	// Output:
 	// // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam
 	// // nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper
-	// // fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis
-	// // magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet
-	// // aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce
-	// // non tortor magna. Cras vel finibus tellus.
+	// // fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc
+	// // sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget
+	// // laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia
+	// // a. Fusce non tortor magna. Cras vel finibus tellus.
 }

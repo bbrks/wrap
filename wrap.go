@@ -74,6 +74,10 @@ func (w Wrapper) line(s string, limit int) string {
 // Wrap will wrap one or more lines of text at the given length.
 // If limit is less than 1, the string remains unwrapped.
 func (w Wrapper) Wrap(s string, limit int) string {
+	// Subtract the length of the prefix from the limit
+	// so we don't break length limits with prefixes.
+	limit -= len(w.NewlinePrefix)
+
 	var ret string
 	for _, str := range strings.Split(s, w.Newline) {
 		str = strings.TrimPrefix(str, w.TrimPrefix)
