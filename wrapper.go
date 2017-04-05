@@ -58,12 +58,12 @@ func NewWrapper() Wrapper {
 // line will wrap a single line of text at the given length.
 // If limit is less than 1, the string remains unwrapped.
 func (w Wrapper) line(s string, limit int) string {
-	if limit < 1 || utf8.RuneCountInString(s) < limit {
+	if limit < 1 || utf8.RuneCountInString(s) < limit+1 {
 		return w.OutputLinePrefix + s + w.OutputLineSuffix
 	}
 
 	// Find the index of the last breakpoint within the limit.
-	i := strings.LastIndexAny(s[:limit], w.Breakpoints)
+	i := strings.LastIndexAny(s[:limit+1], w.Breakpoints)
 
 	// Can't wrap within the limit, wrap at the next breakpoint instead.
 	if i < 0 {

@@ -82,8 +82,8 @@ func ExampleWrapper_Wrap() {
 	// nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper
 	// fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis
 	// magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet
-	// aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce
-	// non tortor magna. Cras vel finibus tellus.
+	// aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non
+	// tortor magna. Cras vel finibus tellus.
 }
 
 func ExampleWrapper_Wrap_paragraphs() {
@@ -103,31 +103,31 @@ Nunc mi enim, aliquam quis bibendum sed, commodo quis nulla. Aliquam vulputate a
 	// dui gravida, sed convallis ante aliquam. Morbi euismod felis in justo lobortis,
 	// eu egestas quam cursus. Ut ut tellus mattis, porttitor leo ut, porttitor ex.
 	// Nulla suscipit molestie ligula, quis porta nulla pellentesque ac. Cras ut
-	// vestibulum orci. Phasellus ante nisl, dignissim non nunc eget, dapibus
-	// convallis orci. Integer vel euismod mauris. Integer tortor elit, vestibulum
-	// eget augue vitae, vehicula commodo sapien. Integer iaculis maximus dui, vitae
-	// rutrum magna congue at. Praesent varius quam vitae rhoncus fringilla. Quisque
-	// ac ex sit amet enim aliquam rutrum in in tortor. Sed sit amet est finibus,
-	// congue purus et, ultrices quam. Aenean felis velit, ullamcorper at sagittis ut,
-	// aliquam eu mauris.
+	// vestibulum orci. Phasellus ante nisl, dignissim non nunc eget, dapibus convallis
+	// orci. Integer vel euismod mauris. Integer tortor elit, vestibulum eget augue
+	// vitae, vehicula commodo sapien. Integer iaculis maximus dui, vitae rutrum magna
+	// congue at. Praesent varius quam vitae rhoncus fringilla. Quisque ac ex sit amet
+	// enim aliquam rutrum in in tortor. Sed sit amet est finibus, congue purus et,
+	// ultrices quam. Aenean felis velit, ullamcorper at sagittis ut, aliquam eu
+	// mauris.
 	//
 	// Phasellus vel lorem venenatis, condimentum risus quis, ultricies risus. Vivamus
-	// porttitor lorem sit amet bibendum congue. Mauris sem enim, rutrum in ipsum
-	// eget, porttitor placerat diam. Pellentesque ut pharetra augue. Maecenas in ante
-	// eget ex efficitur tincidunt. Cras ut ultrices nisl. Donec tristique tincidunt
-	// eros condimentum tempus. Morbi libero urna, pretium id turpis vel, cursus
-	// efficitur orci. Mauris ut elit felis. Duis ultrices nisl eget accumsan
-	// consectetur. Nullam blandit elit vel vulputate scelerisque. Nulla facilisi.
-	// Cras quis maximus odio. Nam orci est, tempor ac arcu eget, tincidunt
-	// consectetur risus. Donec quis faucibus velit.
+	// porttitor lorem sit amet bibendum congue. Mauris sem enim, rutrum in ipsum eget,
+	// porttitor placerat diam. Pellentesque ut pharetra augue. Maecenas in ante eget
+	// ex efficitur tincidunt. Cras ut ultrices nisl. Donec tristique tincidunt eros
+	// condimentum tempus. Morbi libero urna, pretium id turpis vel, cursus efficitur
+	// orci. Mauris ut elit felis. Duis ultrices nisl eget accumsan consectetur. Nullam
+	// blandit elit vel vulputate scelerisque. Nulla facilisi. Cras quis maximus odio.
+	// Nam orci est, tempor ac arcu eget, tincidunt consectetur risus. Donec quis
+	// faucibus velit.
 	//
 	// Maecenas rhoncus semper nisi non luctus. Nam accumsan malesuada urna vel
 	// vehicula. Nullam quis dui in augue tristique sollicitudin. Praesent vulputate
-	// condimentum vestibulum. Morbi tincidunt consectetur velit non accumsan.
-	// Praesent sit amet vestibulum purus. Orci varius natoque penatibus et magnis dis
-	// parturient montes, nascetur ridiculus mus. Nulla rhoncus urna ut aliquet
-	// congue. Sed ornare dignissim orci non imperdiet. Maecenas nec magna bibendum,
-	// cursus nisi ac, commodo arcu.
+	// condimentum vestibulum. Morbi tincidunt consectetur velit non accumsan. Praesent
+	// sit amet vestibulum purus. Orci varius natoque penatibus et magnis dis
+	// parturient montes, nascetur ridiculus mus. Nulla rhoncus urna ut aliquet congue.
+	// Sed ornare dignissim orci non imperdiet. Maecenas nec magna bibendum, cursus
+	// nisi ac, commodo arcu.
 	//
 	// Sed auctor id leo at molestie. Donec sed cursus massa. Morbi semper lobortis
 	// dui. Sed mattis sem a molestie sodales. Cras consequat sapien semper, pretium
@@ -135,15 +135,14 @@ Nunc mi enim, aliquam quis bibendum sed, commodo quis nulla. Aliquam vulputate a
 	// et consectetur ante sodales ut.
 	//
 	// Nunc mi enim, aliquam quis bibendum sed, commodo quis nulla. Aliquam vulputate
-	// arcu a volutpat semper. Donec nec mauris eros. Suspendisse velit ante,
-	// fermentum a odio non, porta dignissim nunc. Vestibulum condimentum at massa at
-	// malesuada. Etiam augue purus, interdum a est pretium, cursus interdum eros.
-	// Vestibulum et ligula dignissim, suscipit arcu et, congue sem. Integer posuere
-	// mauris id scelerisque sagittis. Proin cursus congue sem, nec pulvinar neque
-	// auctor eget. Suspendisse vitae mi ipsum. Nullam sed mauris posuere, accumsan
-	// ligula vitae, viverra tellus. Morbi quam turpis, sagittis vitae arcu vel,
-	// tempus sagittis neque. Vivamus dolor purus, blandit ac condimentum a, interdum
-	// in ipsum.
+	// arcu a volutpat semper. Donec nec mauris eros. Suspendisse velit ante, fermentum
+	// a odio non, porta dignissim nunc. Vestibulum condimentum at massa at malesuada.
+	// Etiam augue purus, interdum a est pretium, cursus interdum eros. Vestibulum et
+	// ligula dignissim, suscipit arcu et, congue sem. Integer posuere mauris id
+	// scelerisque sagittis. Proin cursus congue sem, nec pulvinar neque auctor eget.
+	// Suspendisse vitae mi ipsum. Nullam sed mauris posuere, accumsan ligula vitae,
+	// viverra tellus. Morbi quam turpis, sagittis vitae arcu vel, tempus sagittis
+	// neque. Vivamus dolor purus, blandit ac condimentum a, interdum in ipsum.
 }
 
 func ExampleWrapper_Wrap_short() {
