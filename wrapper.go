@@ -44,6 +44,11 @@ type Wrapper struct {
 	// TrimSuffix can be set to remove a suffix on each input line.
 	// Default: ""
 	TrimInputSuffix string
+
+	// StripTrailingNewline can be set to true if you want the trailing
+	// newline to be removed from the return vailue.
+	// Default: false
+	StripTrailingNewline bool
 }
 
 // NewWrapper returns a new instance of a Wrapper initialised with defaults.
@@ -95,5 +100,8 @@ func (w Wrapper) Wrap(s string, limit int) string {
 		ret += w.line(str, limit) + w.Newline
 	}
 
+	if w.StripTrailingNewline {
+		return strings.TrimSuffix(ret, w.Newline)
+	}
 	return ret
 }
