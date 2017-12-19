@@ -24,9 +24,7 @@ See [godoc.org/github.com/bbrks/wrap](https://godoc.org/github.com/bbrks/wrap) f
 
 ## Contributing
 
-Issues/PRs are much appreciated!
-
-Feature requests/improvements welcome.
+Issues, feature requests or improvements welcome!
 
 ## License
-This project is licensed under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](LICENSE).
