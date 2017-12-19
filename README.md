@@ -4,7 +4,6 @@ An efficient and flexible word-wrapping package for Go (golang)
 
 ## Usage
 
-[embedmd]:# (wrap_test.go /\tvar loremIpsum/ /tellus.\n/)
 ```go
 	var loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus."
 
@@ -18,6 +17,8 @@ An efficient and flexible word-wrapping package for Go (golang)
 	// aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non
 	// tortor magna. Cras vel finibus tellus.
 ```
+
+### Advanced Usage (custom breakpoints, prefixes, suffixes, etc.)
 
 See [godoc.org/github.com/bbrks/wrap](https://godoc.org/github.com/bbrks/wrap) for examples using the `Wrapper` type to provide customisable breakpoints, prefixes, suffixes and more!
 

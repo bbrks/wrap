@@ -60,27 +60,9 @@ func NewWrapper() Wrapper {
 	}
 }
 
-// line will wrap a single line of text at the given length.
-// If limit is less than 1, the string remains unwrapped.
-func (w Wrapper) line(s string, limit int) string {
-	if limit < 1 || utf8.RuneCountInString(s) < limit+1 {
-		return w.OutputLinePrefix + s + w.OutputLineSuffix
-	}
-
-	// Find the index of the last breakpoint within the limit.
-	i := strings.LastIndexAny(s[:limit+1], w.Breakpoints)
-
-	// Can't wrap within the limit, wrap at the next breakpoint instead.
-	if i < 0 {
-		i = strings.IndexAny(s, w.Breakpoints)
-		// Nothing left to do!
-		if i < 0 {
-			return w.OutputLinePrefix + s + w.OutputLineSuffix
-		}
-	}
-
-	// Recurse until we have nothing left to do.
-	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+1:], limit)
+// Wrap is shorthand for declaring a new default Wrapper calling its Wrap method
+func Wrap(s string, limit int) string {
+	return NewWrapper().Wrap(s, limit)
 }
 
 // Wrap will wrap one or more lines of text at the given length.
@@ -104,4 +86,27 @@ func (w Wrapper) Wrap(s string, limit int) string {
 		return strings.TrimSuffix(ret, w.Newline)
 	}
 	return ret
+}
+
+// line will wrap a single line of text at the given length.
+// If limit is less than 1, the string remains unwrapped.
+func (w Wrapper) line(s string, limit int) string {
+	if limit < 1 || utf8.RuneCountInString(s) < limit+1 {
+		return w.OutputLinePrefix + s + w.OutputLineSuffix
+	}
+
+	// Find the index of the last breakpoint within the limit.
+	i := strings.LastIndexAny(s[:limit+1], w.Breakpoints)
+
+	// Can't wrap within the limit, wrap at the next breakpoint instead.
+	if i < 0 {
+		i = strings.IndexAny(s, w.Breakpoints)
+		// Nothing left to do!
+		if i < 0 {
+			return w.OutputLinePrefix + s + w.OutputLineSuffix
+		}
+	}
+
+	// Recurse until we have nothing left to do.
+	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+1:], limit)
 }
