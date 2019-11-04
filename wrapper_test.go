@@ -1,13 +1,11 @@
 package wrap_test
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 	"unicode/utf8"
 
 	"github.com/bbrks/wrap"
-	"github.com/stretchr/testify/assert"
 )
 
 // tests contains various line lengths to test our wrap functions.
@@ -46,15 +44,20 @@ func TestWrapper_Wrap(t *testing.T) {
 
 				// If length < 1, the string remains unchaged.
 				if l < 1 {
-					assert.Equal(t, strings.Trim(s, "\n"), v)
+					if strings.Trim(s, "\n") != v {
+						t.Error("Wrapped value does not equal original")
+					}
 					continue
 				}
 
-				assert.True(t, utf8.RuneCountInString(v) <= l,
-					fmt.Sprintf("Line length greater than %d: %s", l, v))
+				if utf8.RuneCountInString(v) > l {
+					t.Errorf("Line length greater than %d: %s", l, v)
+				}
 			}
 
-			assert.Equal(t, wrapped, stripped+"\n")
+			if wrapped != stripped+"\n" {
+				t.Error("Wrapped value did not strip newline")
+			}
 
 		}
 
