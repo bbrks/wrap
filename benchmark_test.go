@@ -3,7 +3,7 @@ package wrap_test
 import (
 	"testing"
 
-	"github.com/bbrks/wrap"
+	"github.com/bbrks/wrap/v2"
 )
 
 func benchmarkWrap(b *testing.B, limit int) {

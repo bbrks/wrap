@@ -3,7 +3,7 @@ package wrap_test
 import (
 	"fmt"
 
-	"github.com/bbrks/wrap"
+	"github.com/bbrks/wrap/v2"
 )
 
 func ExampleWrap() {

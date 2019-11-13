@@ -5,7 +5,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/bbrks/wrap"
+	"github.com/bbrks/wrap/v2"
 )
 
 // tests contains various line lengths to test our wrap functions.
