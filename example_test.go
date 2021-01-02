@@ -97,7 +97,7 @@ Nunc mi enim, aliquam quis bibendum sed, commodo quis nulla. Aliquam vulputate a
 	// neque. Vivamus dolor purus, blandit ac condimentum a, interdum in ipsum.
 }
 
-func ExampleWrapper_Wrap_CutLongWords() {
+func ExampleWrapper_Wrap_cutLongWords() {
 	var loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel."
 
 	w := wrap.NewWrapper()
