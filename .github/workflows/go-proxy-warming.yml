@@ -1,0 +1,13 @@
+on:
+  release:
+    types:
+      - created
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  go-proxy-warming:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull new module version
+      uses: andrewslotin/go-proxy-pull-action@master
