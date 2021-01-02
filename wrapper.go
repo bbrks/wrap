@@ -46,9 +46,12 @@ type Wrapper struct {
 	TrimInputSuffix string
 
 	// StripTrailingNewline can be set to true if you want the trailing
-	// newline to be removed from the return vailue.
+	// newline to be removed from the return value.
 	// Default: false
 	StripTrailingNewline bool
+
+	// CutLongWords will cause a hard-wrap in the middle of a word if the word's length exceeds the given limit.
+	CutLongWords bool
 }
 
 // NewWrapper returns a new instance of a Wrapper initialised with defaults.
@@ -98,15 +101,24 @@ func (w Wrapper) line(s string, limit int) string {
 	// Find the index of the last breakpoint within the limit.
 	i := strings.LastIndexAny(s[:limit+1], w.Breakpoints)
 
-	// Can't wrap within the limit, wrap at the next breakpoint instead.
+	breakpointWidth := 1
+
+	// Can't wrap within the limit
 	if i < 0 {
-		i = strings.IndexAny(s, w.Breakpoints)
-		// Nothing left to do!
-		if i < 0 {
-			return w.OutputLinePrefix + s + w.OutputLineSuffix
+		if w.CutLongWords {
+			// wrap at the limit
+			i = limit
+			breakpointWidth = 0
+		} else {
+			// wrap at the next breakpoint instead
+			i = strings.IndexAny(s, w.Breakpoints)
+			// Nothing left to do!
+			if i < 0 {
+				return w.OutputLinePrefix + s + w.OutputLineSuffix
+			}
 		}
 	}
 
 	// Recurse until we have nothing left to do.
-	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+1:], limit)
+	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+breakpointWidth:], limit)
 }
