@@ -97,6 +97,32 @@ Nunc mi enim, aliquam quis bibendum sed, commodo quis nulla. Aliquam vulputate a
 	// neque. Vivamus dolor purus, blandit ac condimentum a, interdum in ipsum.
 }
 
+func ExampleWrapper_Wrap_CutLongWords() {
+	var loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel."
+
+	w := wrap.NewWrapper()
+	w.CutLongWords = true
+
+	// Wrap at 10 chars and cut words longer.
+	fmt.Println(w.Wrap(loremIpsum, 10))
+	// Output:
+	// Lorem
+	// ipsum
+	// dolor sit
+	// amet,
+	// consectetu
+	// r
+	// adipiscing
+	// elit. Sed
+	// vulputate
+	// quam nibh,
+	// et
+	// faucibus
+	// enim
+	// gravida
+	// vel.
+}
+
 func ExampleWrapper_Wrap_short() {
 	var loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate quam nibh, et faucibus enim gravida vel. Integer bibendum lectus et erat semper fermentum quis a risus. Fusce dignissim tempus metus non pretium. Nunc sagittis magna nec purus porttitor mollis. Pellentesque feugiat quam eget laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia a. Fusce non tortor magna. Cras vel finibus tellus."
 
