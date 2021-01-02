@@ -26,4 +26,11 @@ jobs:
         go get -v -t -d ./...
 
     - name: Test
-      run: go test -v ./...
+      run: go test -v -coverprofile=coverage.out -covermode=count ./...
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./coverage.out
+        fail_ci_if_error: true
+        verbose: true
