@@ -1,6 +1,7 @@
 package wrap_test
 
 import (
+	"strconv"
 	"strings"
 	"testing"
 	"unicode/utf8"
@@ -61,5 +62,46 @@ func TestWrapper_Wrap(t *testing.T) {
 
 		}
 
+	}
+}
+
+func TestWrapper_Wrap_CutLongWords(t *testing.T) {
+	const limit = 8
+
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			input: "A short woooord",
+			expected: `A short
+woooord`,
+		},
+		{
+			input: "A perfect wooooord",
+			expected: `A
+perfect
+wooooord`,
+		},
+		{
+			input: "A long wooooooooooooord",
+			expected: `A long
+wooooooo
+oooooord`,
+		},
+	}
+
+	for i, test := range tests {
+		t.Run(strconv.FormatInt(int64(i), 10), func(t *testing.T) {
+			w := wrap.NewWrapper()
+			w.CutLongWords = true
+			w.StripTrailingNewline = true
+
+			actual := w.Wrap(test.input, limit)
+
+			if actual != test.expected {
+				t.Errorf("expected %q but got %q", test.expected, actual)
+			}
+		})
 	}
 }
