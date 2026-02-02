@@ -115,6 +115,9 @@ func (w Wrapper) Wrap(s string, limit int) string {
 
 // lineBuilder writes a single wrapped line to the builder.
 func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
+	// Trim leading breakpoints to avoid empty or whitespace-only lines
+	s = strings.TrimLeft(s, w.Breakpoints)
+
 	// Fast path: if byte length is less than limit, rune count must also be less
 	if limit < 1 || len(s) < limit+1 {
 		sb.WriteString(w.OutputLinePrefix)
@@ -157,10 +160,15 @@ func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 		}
 	}
 
-	// Write this line and recurse
+	// Write this line (trim trailing breakpoints) and recurse
 	sb.WriteString(w.OutputLinePrefix)
-	sb.WriteString(s[:i])
+	sb.WriteString(strings.TrimRight(s[:i], w.Breakpoints))
 	sb.WriteString(w.OutputLineSuffix)
 	sb.WriteString(w.Newline)
-	w.lineBuilder(sb, s[i+breakpointWidth:], limit)
+
+	// Trim leading breakpoints from the next line to avoid leading whitespace
+	remainder := s[i+breakpointWidth:]
+	remainder = strings.TrimLeft(remainder, w.Breakpoints)
+
+	w.lineBuilder(sb, remainder, limit)
 }

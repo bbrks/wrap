@@ -438,3 +438,50 @@ func TestWrapper_EmptyNewline(t *testing.T) {
 		t.Errorf("got %q, want %q", result, expected)
 	}
 }
+
+func TestWrapper_LeadingBreakpoints(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		limit    int
+		expected string
+	}{
+		{"single leading space", " hello world", 5, "hello\nworld"},
+		{"multiple leading spaces", "   hello", 10, "hello"},
+		{"leading space with wrap", " hello world", 80, "hello world"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := wrap.NewWrapper()
+			w.StripTrailingNewline = true
+			if got := w.Wrap(tt.input, tt.limit); got != tt.expected {
+				t.Errorf("got %q, want %q", got, tt.expected)
+			}
+		})
+	}
+}
+
+func TestWrapper_ConsecutiveBreakpoints(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		limit    int
+		expected string
+	}{
+		{"double space", "hello  world", 6, "hello\nworld"},
+		{"triple space", "hello   world", 6, "hello\nworld"},
+		{"multiple gaps", "a    b    c", 3, "a\nb\nc"},
+		{"spaces around words", "  hello  world  ", 5, "hello\nworld\n"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := wrap.NewWrapper()
+			w.StripTrailingNewline = true
+			if got := w.Wrap(tt.input, tt.limit); got != tt.expected {
+				t.Errorf("got %q, want %q", got, tt.expected)
+			}
+		})
+	}
+}
