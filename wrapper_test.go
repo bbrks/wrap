@@ -105,3 +105,52 @@ oooooord`,
 		})
 	}
 }
+
+// TestCutLongWordsUTF8Multibyte ensures multibyte UTF8 runes are appropriately cut when using CutLongWords (hard-wrapping).
+func TestCutLongWordsUTF8Multibyte(t *testing.T) {
+	tests := []struct {
+		name   string
+		input  string
+		prefix string
+		limit  int
+	}{
+		{
+			name:   "multibyte_char_U+0080",
+			input:  "\u00800", // U+0080 (2 bytes) followed by "0"
+			prefix: "ӽ00",     // U+04FD (2 bytes) followed by "00"
+			limit:  4,
+		},
+		{
+			name:   "multibyte_char_U+00FF",
+			input:  "\u00FF\u00FF\u00FF",
+			prefix: "",
+			limit:  2,
+		},
+		{
+			name:   "emoji_4byte",
+			input:  "😀😀😀😀",
+			prefix: "",
+			limit:  2,
+		},
+		{
+			name:   "mixed_multibyte",
+			input:  "日本語テスト",
+			prefix: "-> ",
+			limit:  5,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			w := wrap.NewWrapper()
+			w.CutLongWords = true
+			w.OutputLinePrefix = tc.prefix
+
+			result := w.Wrap(tc.input, tc.limit)
+
+			if !utf8.ValidString(result) {
+				t.Errorf("Result is not valid UTF-8: %q (bytes: %v)", result, []byte(result))
+			}
+		})
+	}
+}

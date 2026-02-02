@@ -98,16 +98,19 @@ func (w Wrapper) line(s string, limit int) string {
 		return w.OutputLinePrefix + s + w.OutputLineSuffix
 	}
 
+	// Convert rune limit to byte index for slicing
+	limitByteIndex := runeIndexToByte(s, limit+1)
+
 	// Find the index of the last breakpoint within the limit.
-	i := strings.LastIndexAny(s[:limit+1], w.Breakpoints)
+	i := strings.LastIndexAny(s[:limitByteIndex], w.Breakpoints)
 
 	breakpointWidth := 1
 
 	// Can't wrap within the limit
 	if i < 0 {
 		if w.CutLongWords {
-			// wrap at the limit
-			i = limit
+			// wrap at the limit (convert rune index to byte index)
+			i = runeIndexToByte(s, limit)
 			breakpointWidth = 0
 		} else {
 			// wrap at the next breakpoint instead
@@ -121,4 +124,15 @@ func (w Wrapper) line(s string, limit int) string {
 
 	// Recurse until we have nothing left to do.
 	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+breakpointWidth:], limit)
+}
+
+// runeIndexToByte returns the byte index for a given rune index in s.
+// If runeIndex exceeds the string length, returns len(s).
+func runeIndexToByte(s string, runeIndex int) int {
+	byteIndex := 0
+	for i := 0; i < runeIndex && byteIndex < len(s); i++ {
+		_, size := utf8.DecodeRuneInString(s[byteIndex:])
+		byteIndex += size
+	}
+	return byteIndex
 }
