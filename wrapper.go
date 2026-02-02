@@ -100,15 +100,23 @@ func (w Wrapper) Wrap(s string, limit int) string {
 
 // lineBuilder writes a single wrapped line to the builder.
 func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
-	if limit < 1 || utf8.RuneCountInString(s) < limit+1 {
+	// Fast path: if byte length is less than limit, rune count must also be less
+	if limit < 1 || len(s) < limit+1 {
 		sb.WriteString(w.OutputLinePrefix)
 		sb.WriteString(s)
 		sb.WriteString(w.OutputLineSuffix)
 		return
 	}
 
-	// Convert rune limit to byte index for slicing
-	limitByteIndex := runeIndexToByte(s, limit+1)
+	// Convert rune limit to byte index for slicing (also checks rune count)
+	limitByteIndex := runeIndexToByteWithShortCheck(s, limit+1)
+	if limitByteIndex < 0 {
+		// String is shorter than limit in runes
+		sb.WriteString(w.OutputLinePrefix)
+		sb.WriteString(s)
+		sb.WriteString(w.OutputLineSuffix)
+		return
+	}
 
 	// Find the index of the last breakpoint within the limit.
 	i := strings.LastIndexAny(s[:limitByteIndex], w.Breakpoints)
@@ -142,13 +150,56 @@ func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 	w.lineBuilder(sb, s[i+breakpointWidth:], limit)
 }
 
+// isASCII returns true if the string contains only ASCII characters.
+func isASCII(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] >= utf8.RuneSelf {
+			return false
+		}
+	}
+	return true
+}
+
 // runeIndexToByte returns the byte index for a given rune index in s.
 // If runeIndex exceeds the string length, returns len(s).
 func runeIndexToByte(s string, runeIndex int) int {
+	if runeIndex >= len(s) {
+		if isASCII(s) {
+			return len(s)
+		}
+	} else if isASCII(s[:runeIndex]) {
+		return runeIndex
+	}
 	byteIndex := 0
 	for i := 0; i < runeIndex && byteIndex < len(s); i++ {
 		_, size := utf8.DecodeRuneInString(s[byteIndex:])
 		byteIndex += size
+	}
+	return byteIndex
+}
+
+// runeIndexToByteWithShortCheck returns the byte index for a given rune index.
+// Returns -1 if the string has fewer than runeIndex runes.
+func runeIndexToByteWithShortCheck(s string, runeIndex int) int {
+	if runeIndex > len(s) {
+		// String can't have enough runes if byte length is less
+		if isASCII(s) {
+			return -1
+		}
+		// Count actual runes for non-ASCII
+		if utf8.RuneCountInString(s) < runeIndex {
+			return -1
+		}
+	} else if isASCII(s[:runeIndex]) {
+		return runeIndex
+	}
+	byteIndex := 0
+	for i := 0; i < runeIndex && byteIndex < len(s); i++ {
+		_, size := utf8.DecodeRuneInString(s[byteIndex:])
+		byteIndex += size
+	}
+	if byteIndex >= len(s) && utf8.RuneCountInString(s) < runeIndex {
+		return -1
 	}
 	return byteIndex
 }
