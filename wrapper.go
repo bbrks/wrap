@@ -85,14 +85,25 @@ func (w Wrapper) Wrap(s string, limit int) string {
 	}
 	sb.Grow(len(s) + len(s)/growLimit*len(w.Newline))
 
-	lines := strings.Split(s, w.Newline)
-	for i, str := range lines {
+	for {
+		idx := strings.Index(s, w.Newline)
+		var str string
+		if idx < 0 {
+			str = s
+		} else {
+			str = s[:idx]
+		}
 		str = strings.TrimPrefix(str, w.TrimInputPrefix)
 		str = strings.TrimSuffix(str, w.TrimInputSuffix)
 		w.lineBuilder(&sb, str, limit)
-		if i < len(lines)-1 || !w.StripTrailingNewline {
-			sb.WriteString(w.Newline)
+		if idx < 0 {
+			if !w.StripTrailingNewline {
+				sb.WriteString(w.Newline)
+			}
+			break
 		}
+		sb.WriteString(w.Newline)
+		s = s[idx+len(w.Newline):]
 	}
 
 	return sb.String()
