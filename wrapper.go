@@ -71,6 +71,11 @@ func Wrap(s string, limit int) string {
 // Wrap will wrap one or more lines of text at the given length.
 // If limit is less than 1, the string remains unwrapped.
 func (w Wrapper) Wrap(s string, limit int) string {
+	// Empty newline would cause infinite loop, use default
+	if w.Newline == "" {
+		w.Newline = defaultNewline
+	}
+
 	// Subtract the length of the prefix and suffix from the limit
 	// so we don't break length limits when using them.
 	if w.LimitIncludesPrefixSuffix {

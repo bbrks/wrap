@@ -425,3 +425,16 @@ func TestWrapper_UTF8EdgeCases(t *testing.T) {
 		})
 	}
 }
+
+func TestWrapper_EmptyNewline(t *testing.T) {
+	// Empty newline should not cause infinite loop, should use default
+	w := wrap.NewWrapper()
+	w.Newline = ""
+	w.StripTrailingNewline = true
+
+	result := w.Wrap("hello world", 5)
+	expected := "hello\nworld"
+	if result != expected {
+		t.Errorf("got %q, want %q", result, expected)
+	}
+}
