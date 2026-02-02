@@ -140,6 +140,7 @@ func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 	i := strings.LastIndexAny(s[:limitByteIndex], w.Breakpoints)
 
 	breakpointWidth := 1
+	keepBreakpoint := false
 
 	// Can't wrap within the limit
 	if i < 0 {
@@ -160,9 +161,18 @@ func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 		}
 	}
 
-	// Write this line (trim trailing breakpoints) and recurse
+	// Non-space breakpoints (like hyphen) should stay on the line
+	if breakpointWidth > 0 && s[i] != ' ' {
+		keepBreakpoint = true
+	}
+
+	// Write this line and recurse
 	sb.WriteString(w.OutputLinePrefix)
-	sb.WriteString(strings.TrimRight(s[:i], w.Breakpoints))
+	lineContent := s[:i]
+	if keepBreakpoint {
+		lineContent = s[:i+1]
+	}
+	sb.WriteString(strings.TrimRight(lineContent, " "))
 	sb.WriteString(w.OutputLineSuffix)
 	sb.WriteString(w.Newline)
 

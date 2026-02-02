@@ -112,9 +112,9 @@ func TestWrapper_Breakpoints(t *testing.T) {
 		expected    string
 	}{
 		{"space only", "hello world foo bar", " ", 10, "hello\nworld foo\nbar\n"},
-		{"hyphen only", "hello-world-foo-bar", "-", 12, "hello-world\nfoo-bar\n"},
-		{"custom breakpoint", "hello|world|foo|bar", "|", 12, "hello|world\nfoo|bar\n"},
-		{"multiple custom breakpoints", "hello|world,foo;bar", "|,;", 12, "hello|world\nfoo;bar\n"},
+		{"hyphen only", "hello-world-foo-bar", "-", 12, "hello-world-\nfoo-bar\n"},
+		{"custom breakpoint", "hello|world|foo|bar", "|", 12, "hello|world|\nfoo|bar\n"},
+		{"multiple custom breakpoints", "hello|world,foo;bar", "|,;", 12, "hello|world,\nfoo;bar\n"},
 		{"no breakpoints found", "helloworldfoobar", " ", 10, "helloworldfoobar\n"},
 	}
 

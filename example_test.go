@@ -197,21 +197,21 @@ func ExampleWrapper_Wrap_short() {
 }
 
 func ExampleWrapper_Wrap_hyphens() {
-	var loremIpsum = `
-In this particular example, I will spam a lot of hyphenated words, which should wrap at some point, and test the multi-breakpoint feature of this package.
-
-The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad-tempered, sport-mad, fair-haired, camera-ready, and finally open-mouthed.
-`
+	var text = `My sister-in-law bought a state-of-the-art, energy-efficient, top-rated washing machine from a well-known, highly-recommended manufacturer based in the north-east. It was a last-minute, spur-of-the-moment decision, but the twenty-year guarantee and the user-friendly, self-cleaning features made it a no-brainer.`
 
 	w := wrap.NewWrapper()
 
-	fmt.Println(w.Wrap(loremIpsum, 80))
+	fmt.Println(w.Wrap(text, 40))
 	// Output:
-	// In this particular example, I will spam a lot of hyphenated words, which should
-	// wrap at some point, and test the multi-breakpoint feature of this package.
-	//
-	// The girl was accident-prone, good-looking, quick-thinking, carbon-neutral, bad
-	// tempered, sport-mad, fair-haired, camera-ready, and finally open-mouthed.
+	// My sister-in-law bought a state-of-the-
+	// art, energy-efficient, top-rated washing
+	// machine from a well-known, highly-
+	// recommended manufacturer based in the
+	// north-east. It was a last-minute, spur-
+	// of-the-moment decision, but the twenty-
+	// year guarantee and the user-friendly,
+	// self-cleaning features made it a no-
+	// brainer.
 }
 
 func ExampleWrapper_Wrap_prefix() {
