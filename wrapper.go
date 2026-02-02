@@ -78,24 +78,33 @@ func (w Wrapper) Wrap(s string, limit int) string {
 		limit -= utf8.RuneCountInString(w.OutputLinePrefix) + utf8.RuneCountInString(w.OutputLineSuffix)
 	}
 
-	var ret string
-	for _, str := range strings.Split(s, w.Newline) {
+	var sb strings.Builder
+	growLimit := limit
+	if growLimit < 1 {
+		growLimit = 1
+	}
+	sb.Grow(len(s) + len(s)/growLimit*len(w.Newline))
+
+	lines := strings.Split(s, w.Newline)
+	for i, str := range lines {
 		str = strings.TrimPrefix(str, w.TrimInputPrefix)
 		str = strings.TrimSuffix(str, w.TrimInputSuffix)
-		ret += w.line(str, limit) + w.Newline
+		w.lineBuilder(&sb, str, limit)
+		if i < len(lines)-1 || !w.StripTrailingNewline {
+			sb.WriteString(w.Newline)
+		}
 	}
 
-	if w.StripTrailingNewline {
-		return strings.TrimSuffix(ret, w.Newline)
-	}
-	return ret
+	return sb.String()
 }
 
-// line will wrap a single line of text at the given length.
-// If limit is less than 1, the string remains unwrapped.
-func (w Wrapper) line(s string, limit int) string {
+// lineBuilder writes a single wrapped line to the builder.
+func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 	if limit < 1 || utf8.RuneCountInString(s) < limit+1 {
-		return w.OutputLinePrefix + s + w.OutputLineSuffix
+		sb.WriteString(w.OutputLinePrefix)
+		sb.WriteString(s)
+		sb.WriteString(w.OutputLineSuffix)
+		return
 	}
 
 	// Convert rune limit to byte index for slicing
@@ -117,13 +126,20 @@ func (w Wrapper) line(s string, limit int) string {
 			i = strings.IndexAny(s, w.Breakpoints)
 			// Nothing left to do!
 			if i < 0 {
-				return w.OutputLinePrefix + s + w.OutputLineSuffix
+				sb.WriteString(w.OutputLinePrefix)
+				sb.WriteString(s)
+				sb.WriteString(w.OutputLineSuffix)
+				return
 			}
 		}
 	}
 
-	// Recurse until we have nothing left to do.
-	return w.OutputLinePrefix + s[:i] + w.OutputLineSuffix + w.Newline + w.line(s[i+breakpointWidth:], limit)
+	// Write this line and recurse
+	sb.WriteString(w.OutputLinePrefix)
+	sb.WriteString(s[:i])
+	sb.WriteString(w.OutputLineSuffix)
+	sb.WriteString(w.Newline)
+	w.lineBuilder(sb, s[i+breakpointWidth:], limit)
 }
 
 // runeIndexToByte returns the byte index for a given rune index in s.
