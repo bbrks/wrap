@@ -15,10 +15,14 @@ func benchmarkWrap(b *testing.B, limit int) {
 	}
 }
 
-func BenchmarkWrap0(b *testing.B)   { benchmarkWrap(b, 0) }
-func BenchmarkWrap5(b *testing.B)   { benchmarkWrap(b, 5) }
-func BenchmarkWrap10(b *testing.B)  { benchmarkWrap(b, 10) }
-func BenchmarkWrap25(b *testing.B)  { benchmarkWrap(b, 25) }
-func BenchmarkWrap80(b *testing.B)  { benchmarkWrap(b, 80) }
-func BenchmarkWrap120(b *testing.B) { benchmarkWrap(b, 120) }
-func BenchmarkWrap500(b *testing.B) { benchmarkWrap(b, 500) }
+func BenchmarkWrap0(b *testing.B)    { benchmarkWrap(b, 0) }
+func BenchmarkWrap1(b *testing.B)    { benchmarkWrap(b, 1) }
+func BenchmarkWrap2(b *testing.B)    { benchmarkWrap(b, 2) }
+func BenchmarkWrap5(b *testing.B)    { benchmarkWrap(b, 5) }
+func BenchmarkWrap10(b *testing.B)   { benchmarkWrap(b, 10) }
+func BenchmarkWrap25(b *testing.B)   { benchmarkWrap(b, 25) }
+func BenchmarkWrap80(b *testing.B)   { benchmarkWrap(b, 80) }
+func BenchmarkWrap120(b *testing.B)  { benchmarkWrap(b, 120) }
+func BenchmarkWrap500(b *testing.B)  { benchmarkWrap(b, 500) }
+func BenchmarkWrap1000(b *testing.B) { benchmarkWrap(b, 1000) }
+func BenchmarkWrap5000(b *testing.B) { benchmarkWrap(b, 5000) }
