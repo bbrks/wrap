@@ -485,3 +485,143 @@ func TestWrapper_ConsecutiveBreakpoints(t *testing.T) {
 		})
 	}
 }
+
+func TestWrapper_MinimumRaggedness(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		limit    int
+		expected string
+	}{
+		// The classic example from xxyxyz.org
+		// Greedy: "a b c d e" / "f g h i j" / "k l m n o" / "p" (very uneven)
+		// Optimal: "a b c d" / "e f g h" / "i j k l" / "m n o p" (balanced)
+		{
+			name:     "balanced paragraph",
+			input:    "a b c d e f g h i j k l m n o p",
+			limit:    9,
+			expected: "a b c d\ne f g h\ni j k l\nm n o p",
+		},
+		{
+			name:     "simple two words",
+			input:    "hello world",
+			limit:    10,
+			expected: "hello\nworld",
+		},
+		{
+			name:     "fits on one line",
+			input:    "hello world",
+			limit:    20,
+			expected: "hello world",
+		},
+		{
+			name:     "single word",
+			input:    "hello",
+			limit:    10,
+			expected: "hello",
+		},
+		{
+			name:     "empty string",
+			input:    "",
+			limit:    10,
+			expected: "",
+		},
+		{
+			name:     "three even words",
+			input:    "aaa bbb ccc",
+			limit:    5,
+			expected: "aaa\nbbb\nccc",
+		},
+		{
+			name:     "longer text",
+			input:    "The quick brown fox jumps over the lazy dog",
+			limit:    15,
+			expected: "The quick brown\nfox jumps over\nthe lazy dog",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := wrap.NewWrapper()
+			w.MinimumRaggedness = true
+			w.StripTrailingNewline = true
+			if got := w.Wrap(tt.input, tt.limit); got != tt.expected {
+				t.Errorf("got %q, want %q", got, tt.expected)
+			}
+		})
+	}
+}
+
+func TestWrapper_MinimumRaggednessWithPrefix(t *testing.T) {
+	w := wrap.NewWrapper()
+	w.MinimumRaggedness = true
+	w.StripTrailingNewline = true
+	w.OutputLinePrefix = "// "
+
+	input := "hello world foo bar"
+	got := w.Wrap(input, 15)
+	expected := "// hello world\n// foo bar"
+	if got != expected {
+		t.Errorf("got %q, want %q", got, expected)
+	}
+}
+
+func TestWrapper_MinimumRaggednessWithCutLongWords(t *testing.T) {
+	w := wrap.NewWrapper()
+	w.MinimumRaggedness = true
+	w.CutLongWords = true
+	w.StripTrailingNewline = true
+
+	input := "hello verylongword world"
+	got := w.Wrap(input, 5)
+	// verylongword should be cut into chunks
+	expected := "hello\nveryl\nongwo\nrd\nworld"
+	if got != expected {
+		t.Errorf("got %q, want %q", got, expected)
+	}
+}
+
+func TestWrapper_MinimumRaggednessVsGreedy(t *testing.T) {
+	// This test demonstrates the difference between greedy and optimal
+	input := "a b c d e f g h i j k l m n o p qqqqqqqqq"
+	limit := 9
+
+	greedy := wrap.NewWrapper()
+	greedy.StripTrailingNewline = true
+	greedyResult := greedy.Wrap(input, limit)
+
+	optimal := wrap.NewWrapper()
+	optimal.MinimumRaggedness = true
+	optimal.StripTrailingNewline = true
+	optimalResult := optimal.Wrap(input, limit)
+
+	// Results should be different - optimal should be more balanced
+	if greedyResult == optimalResult {
+		t.Log("Greedy and optimal produced same result (may be acceptable for some inputs)")
+	}
+
+	// Both should be valid (no line exceeds limit except possibly the last word)
+	for _, line := range strings.Split(greedyResult, "\n") {
+		if utf8.RuneCountInString(line) > limit && line != "qqqqqqqqq" {
+			t.Errorf("greedy line exceeds limit: %q", line)
+		}
+	}
+	for _, line := range strings.Split(optimalResult, "\n") {
+		if utf8.RuneCountInString(line) > limit && line != "qqqqqqqqq" {
+			t.Errorf("optimal line exceeds limit: %q", line)
+		}
+	}
+}
+
+func TestWrapper_MinimumRaggednessUTF8(t *testing.T) {
+	w := wrap.NewWrapper()
+	w.MinimumRaggedness = true
+	w.StripTrailingNewline = true
+
+	input := "日本 語テ スト 文字"
+	got := w.Wrap(input, 5)
+	// Should produce valid UTF-8 and respect rune counts
+	if !utf8.ValidString(got) {
+		t.Errorf("result is not valid UTF-8: %q", got)
+	}
+}

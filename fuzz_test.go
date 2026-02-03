@@ -102,6 +102,21 @@ func FuzzWrap(f *testing.F) {
 				}
 			}
 		}
+
+		// Test with MinimumRaggedness
+		w.CutLongWords = false
+		w.MinimumRaggedness = true
+		result4 := w.Wrap(input, limit)
+		if !utf8.ValidString(result4) {
+			t.Errorf("result with MinimumRaggedness is not valid UTF-8: %q", result4)
+		}
+
+		// Test MinimumRaggedness with CutLongWords
+		w.CutLongWords = true
+		result5 := w.Wrap(input, limit)
+		if !utf8.ValidString(result5) {
+			t.Errorf("result with MinimumRaggedness+CutLongWords is not valid UTF-8: %q", result5)
+		}
 	})
 }
 
@@ -146,18 +161,21 @@ func FuzzWrapWithOptions(f *testing.F) {
 			t.Errorf("result is not valid UTF-8: %q", result)
 		}
 
-		// Test all option combinations
+		// Test all option combinations including MinimumRaggedness
 		for _, strip := range []bool{false, true} {
 			for _, cut := range []bool{false, true} {
 				for _, includeLimit := range []bool{false, true} {
-					w.StripTrailingNewline = strip
-					w.CutLongWords = cut
-					w.LimitIncludesPrefixSuffix = includeLimit
+					for _, optimal := range []bool{false, true} {
+						w.StripTrailingNewline = strip
+						w.CutLongWords = cut
+						w.LimitIncludesPrefixSuffix = includeLimit
+						w.MinimumRaggedness = optimal
 
-					result := w.Wrap(input, limit)
-					if !utf8.ValidString(result) {
-						t.Errorf("result is not valid UTF-8 with strip=%v cut=%v includeLimit=%v: %q",
-							strip, cut, includeLimit, result)
+						result := w.Wrap(input, limit)
+						if !utf8.ValidString(result) {
+							t.Errorf("result is not valid UTF-8 with strip=%v cut=%v includeLimit=%v optimal=%v: %q",
+								strip, cut, includeLimit, optimal, result)
+						}
 					}
 				}
 			}

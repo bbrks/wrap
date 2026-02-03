@@ -236,3 +236,31 @@ func ExampleWrapper_Wrap_prefix() {
 	// // laoreet aliquet. Donec gravida congue massa, et sollicitudin turpis lacinia
 	// // a. Fusce non tortor magna. Cras vel finibus tellus.
 }
+
+func ExampleWrapper_Wrap_minimumRaggedness() {
+	// This example demonstrates the difference between greedy and optimal wrapping.
+	// The input is designed to show how optimal wrapping produces more balanced lines.
+	var text = "a b c d e f g h i j k l m n o p"
+
+	fmt.Println("Greedy (default):")
+	w := wrap.NewWrapper()
+	w.StripTrailingNewline = true
+	fmt.Println(w.Wrap(text, 9))
+
+	fmt.Println()
+	fmt.Println("Optimal (MinimumRaggedness):")
+	w.MinimumRaggedness = true
+	fmt.Println(w.Wrap(text, 9))
+	// Output:
+	// Greedy (default):
+	// a b c d e
+	// f g h i j
+	// k l m n o
+	// p
+	//
+	// Optimal (MinimumRaggedness):
+	// a b c d
+	// e f g h
+	// i j k l
+	// m n o p
+}

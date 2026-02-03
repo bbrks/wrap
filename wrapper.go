@@ -52,6 +52,11 @@ type Wrapper struct {
 
 	// CutLongWords will cause a hard-wrap in the middle of a word if the word's length exceeds the given limit.
 	CutLongWords bool
+
+	// MinimumRaggedness enables optimal-fit line breaking which produces
+	// more visually balanced paragraphs. This is more expensive than the
+	// default greedy algorithm but produces better visual results.
+	MinimumRaggedness bool
 }
 
 // NewWrapper returns a new instance of a Wrapper initialised with defaults.
@@ -117,6 +122,12 @@ func (w Wrapper) Wrap(s string, limit int) string {
 func (w Wrapper) lineBuilder(sb *strings.Builder, s string, limit int) {
 	// Trim leading breakpoints to avoid empty or whitespace-only lines
 	s = strings.TrimLeft(s, w.Breakpoints)
+
+	// Use optimal algorithm if MinimumRaggedness is enabled
+	if w.MinimumRaggedness && limit > 0 {
+		w.lineBuilderOptimal(sb, s, limit)
+		return
+	}
 
 	// Fast path: if byte length is less than limit, rune count must also be less
 	if limit < 1 || len(s) < limit+1 {
