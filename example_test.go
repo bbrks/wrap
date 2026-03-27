@@ -240,27 +240,39 @@ func ExampleWrapper_Wrap_prefix() {
 func ExampleWrapper_Wrap_minimumRaggedness() {
 	// This example demonstrates the difference between greedy and optimal wrapping.
 	// The input is designed to show how optimal wrapping produces more balanced lines.
-	var text = "a b c d e f g h i j k l m n o p"
+	var text = "Typographical irregularities, like unpredictable justification and disproportionate hyphenation, can disrupt reading rhythm. Overly ambitious algorithms often miscalculate line breaks, producing orphaned words or inconsistent margins. Strategic layout engines evaluate multiple options simultaneously, redistributing content to harmonize alignment and minimize visual dissonance."
 
 	fmt.Println("Greedy (default):")
 	w := wrap.NewWrapper()
 	w.StripTrailingNewline = true
-	fmt.Println(w.Wrap(text, 9))
+	fmt.Println(w.Wrap(text, 46))
 
 	fmt.Println()
 	fmt.Println("Optimal (MinimumRaggedness):")
 	w.MinimumRaggedness = true
-	fmt.Println(w.Wrap(text, 9))
+	fmt.Println(w.Wrap(text, 46))
 	// Output:
 	// Greedy (default):
-	// a b c d e
-	// f g h i j
-	// k l m n o
-	// p
+	// Typographical irregularities, like
+	// unpredictable justification and
+	// disproportionate hyphenation, can disrupt
+	// reading rhythm. Overly ambitious algorithms
+	// often miscalculate line breaks, producing
+	// orphaned words or inconsistent margins.
+	// Strategic layout engines evaluate multiple
+	// options simultaneously, redistributing content
+	// to harmonize alignment and minimize visual
+	// dissonance.
 	//
 	// Optimal (MinimumRaggedness):
-	// a b c d
-	// e f g h
-	// i j k l
-	// m n o p
+	// Typographical irregularities,
+	// like unpredictable justification and
+	// disproportionate hyphenation, can
+	// disrupt reading rhythm. Overly ambitious
+	// algorithms often miscalculate line breaks,
+	// producing orphaned words or inconsistent
+	// margins. Strategic layout engines
+	// evaluate multiple options simultaneously,
+	// redistributing content to harmonize
+	// alignment and minimize visual dissonance.
 }
